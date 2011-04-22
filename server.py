@@ -1,6 +1,7 @@
 from bottle import route
 from bottle import run
 from bottle import static_file
+from build_histogram import bucket_log
 
 @route('/')
 def main_page():
@@ -12,6 +13,6 @@ def server_static(filename):
 
 @route('/api/data')
 def data():
-	return {'data': [(3, 1), (4, 2)]}
+	return {'data': bucket_log('midtowndoornail.log')}
 
 run(host='localhost', port=8080)
