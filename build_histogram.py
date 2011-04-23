@@ -15,8 +15,8 @@ def bucket_log(logfile):
 	f = datetime.datetime.strptime
 	datetime_buckets = dict((f('%s0' % bucket, '%Y-%m-%d %H:%M'), count) for bucket, count in buckets.items())
 
-	for event_datetime, count in sorted(datetime_buckets.items()):
-		print "[%s] %s" % (event_datetime, count)
+	#for event_datetime, count in sorted(datetime_buckets.items()):
+	#	print "[%s] %s" % (event_datetime, count)
 
 	start_datetime = min(datetime_buckets.keys())
 	datapoints = sorted(((event_datetime - start_datetime).seconds, count) for event_datetime, count in datetime_buckets.items())

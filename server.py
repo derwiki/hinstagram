@@ -1,3 +1,6 @@
+import sys
+import json
+
 from bottle import route
 from bottle import run
 from bottle import static_file
@@ -9,10 +12,12 @@ def main_page():
 
 @route('/:filename')
 def server_static(filename):
+    print filename
     return static_file(filename, root='static')
 
 @route('/api/data')
 def data():
-	return {'data': bucket_log('midtowndoornail.log')}
+	return json.dumps(bucket_log('midtowndoornail.log'))
 
-run(host='localhost', port=8080)
+port = sys.argv[1] if len(sys.argv) > 1 else 8080
+run(host='0.0.0.0', port=port)

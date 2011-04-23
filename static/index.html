@@ -42,6 +42,7 @@
     </header>
     <div id="main" role="main">
         Histograms, Woo!
+        <div id="chartdiv" style="height:400px;width:300px; "></div>
     </div>
     <footer>
 
@@ -55,10 +56,23 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
   <script>window.jQuery || document.write("<script src='js/libs/jquery-1.5.2.min.js'>\x3C/script>")</script>
 
+  <!--[if IE]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
+  <script language="javascript" type="text/javascript" src="jquery.jqplot.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="jquery.jqplot.min.css" />
 
   <!-- scripts concatenated and minified via ant build script-->
   <script src="js/plugins.js"></script>
   <script src="js/script.js"></script>
+
+  <script language="javascript">
+    $(document).ready(function() {
+      console.log('document ready');
+      var points;
+      $.getJSON('/api/data', function(data) { points = data; });
+      //$.jqplot('chartdiv',  [[[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]]]);
+      $.jqplot('chartdiv',  points);
+    });
+  </script>
   <!-- end scripts-->
 
 
@@ -69,12 +83,13 @@
 
 
   <!-- mathiasbynens.be/notes/async-analytics-snippet Change UA-XXXXX-X to be your site's ID -->
+  <!--
   <script>
     var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
     (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
     g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
     s.parentNode.insertBefore(g,s)}(document,"script"));
   </script>
-
+  -->
 </body>
 </html>
