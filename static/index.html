@@ -49,17 +49,6 @@
     </footer>
   </div> <!--! end of #container -->
 
-
-  <!-- JavaScript at the bottom for fast page loading -->
-
-  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
-  <script>window.jQuery || document.write("<script src='js/libs/jquery-1.5.2.min.js'>\x3C/script>")</script>
-
-  <!--[if IE]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
-  <script language="javascript" type="text/javascript" src="jquery.jqplot.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="jquery.jqplot.min.css" />
-
   <link type="text/css" href="/jquery-ui-1.7.2.custom.css" rel="stylesheet" /> 
   <link type="text/css" href="/jquery.histogram.css" rel="stylesheet" /> 
   <script type="text/javascript" src="/jquery-1.3.2.min.js"></script> 
@@ -68,20 +57,32 @@
   <style>body{font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;}</style> 
   <script type="text/javascript">
     $(document).ready(function(){
+
+      // there's got to be a cleaner way to do this
+      var search = document.location.search;
+      var kwargs = {};
+      var url = '/api/data';
+
+      search = search.substring(1, search.length);
+      $(search.split('&')).each(function(idx, element) {
+          var tuple = element.split('=');
+          kwargs[tuple[0]] = tuple[1];
+      });
+      if (kwargs['bucket_seconds'] !== undefined) {
+        url += '?bucket_seconds=' + kwargs['bucket_seconds'];
+      }
+
       $.ajax({
-        'url':'/api/data',
+        'url':url,
         'datatype':'json',
         'success': function(resp) {
-          resp = JSON.parse(resp);
-          //debugger ;
-          console.log(resp);
+          bars = JSON.parse(resp);
           $("#chartdiv").histogram({
-  		    'subject': 'Task',
+  		    'subject': 'Date',
   			'title': ['Open'],
-  			'showPercentage': false,
-  			'showSubValue': true,
-  			'legend': false,
-            'bars': resp
+  			'showSubValue': false,
+  			'legend': true,
+            'bars': bars
           }); 
         }
       });
